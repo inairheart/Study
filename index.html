@@ -406,15 +406,14 @@ window.showPage=function(name){
 };
 
 // 블럭 HTML 생성
-function makeBlockHtml(state,page,i,dates1,dates2){
-  const cls=state===2?'done2':state===1?'done1':'';
-  const dateStr=state===1?fmtDate((dates1||[])[i]):state===2?fmtDate((dates2||[])[i]):'';
-  const dateColor=state===1?'#B8860B':'#2D8600';
-  return `<div class="block ${cls}" id="block${i}" onclick="toggleBlock(${i})">
-    ${state===0?`<span class="bnum" style="font-size:11px;color:#CCC">${page}</span>`:''}
-    ${(state===1||state===2)&&dateStr?`<span class="bdate" style="color:${dateColor}">${dateStr}</span>`:''}
-    <span class="trophy">${getTrophy(i)}</span>
-  </div>`;
+function makeBlockHtml(state, page, i, dates1, dates2){
+  const cls = state===2?'done2':state===1?'done1':'';
+  const ts = state===1 ? (dates1&&dates1[i]) : state===2 ? (dates2&&dates2[i]) : null;
+  const dateStr = ts ? fmtDate(ts) : '';
+  const dateColor = state===1 ? '#B8860B' : '#2D8600';
+  if(state===2) return `<div class="block done2" id="block${i}" onclick="toggleBlock(${i})"><span class="trophy">${getTrophy(i)}</span></div>`;
+  if(state===1) return `<div class="block done1" id="block${i}" onclick="toggleBlock(${i})"><span class="bdate" style="font-size:9px;font-weight:800;color:${dateColor}">${dateStr||'?'}</span></div>`;
+  return `<div class="block" id="block${i}" onclick="toggleBlock(${i})"><span class="bnum" style="font-size:11px;color:#CCC">${page}</span></div>`;
 }
 
 // 렌더
@@ -553,7 +552,22 @@ function renderTimerLog(){
   document.getElementById('totalStudy').textContent=total>=60?`${Math.floor(total/60)}시간 ${total%60}분`:total+'분';
 }
 
-window.deleteLog=function(idx){
+window.exportData = function(){
+  const data = {
+    missions,
+    appTitle,
+    appIcon,
+    timerLogs,
+    exportedAt: new Date().toLocaleString('ko-KR')
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `미션체크_백업_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
   timerLogs.splice(idx,1);
   localStorage.setItem('timerLogs',JSON.stringify(timerLogs));
   renderTimerLog();

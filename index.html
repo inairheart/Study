@@ -133,11 +133,10 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
 <body>
 
 <div class="header">
-  <div class="logo-wrap" onclick="openNameModal()">
-    <span class="logo-icon" id="appIcon">📚</span>
+  <div class="logo-wrap">
+    <span class="logo-icon" id="appIcon" onclick="openIconModal()" style="cursor:pointer">📚</span>
     <div>
-      <div class="logo-text" id="appTitle">지율이의 미션 체크</div>
-      <div class="logo-hint">눌러서 바꾸기 ✏️</div>
+      <div class="logo-text" id="appTitle" contenteditable="true" onblur="saveAppTitleInline(this)" onclick="this.focus()" style="cursor:text;outline:none;min-width:60px">지율이의 미션 체크</div>
     </div>
   </div>
   <div class="sync-badge" id="syncBadge">🔄 연결중...</div>
@@ -253,7 +252,16 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
   </div>
 </div>
 
-<div class="modal-bg" id="nameModalBg">
+<!-- 아이콘 선택 모달 -->
+<div class="modal-bg" id="iconModalBg">
+  <div class="modal">
+    <h2>아이콘 선택</h2>
+    <div class="icon-grid" id="iconGridMain" style="max-height:320px"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeIconModal()">닫기</button>
+    </div>
+  </div>
+</div>
   <div class="modal">
     <h2>앱 이름 & 아이콘</h2>
     <div class="name-preview">
@@ -305,7 +313,23 @@ function loadFromFirebase(cb) {
 }
 
 // ── 상수 ──────────────────────────────────
-const ICON_LIST = ['📚','📖','✏️','🎯','🌟','🏆','🎮','🚀','🌈','💡','🎨','🎸','⚽','🏀','🎾','🦄','🐉','🦊','🐱','🐶','🐰','🐧','🦁','🐨','🦋','🌸','🍀','🍭','🌙','☀️','⭐','❤️','💎','🔥','🎵','🪄','🗝️','🧩','👑','🎠'];
+const ICON_LIST = [
+  '📚','📖','✏️','🖊️','📝','📓','📔','📒','📕','📗','📘','📙',
+  '🎯','🏆','🥇','🥈','🥉','🎖️','🏅','👑',
+  '🌟','⭐','💫','✨','🌈','☀️','🌙','⚡','🔥','❄️',
+  '🎮','🕹️','🚀','🛸','🛩️','🚂','🚗','🏎️',
+  '💡','🔭','🔬','⚗️','🧪','🧬','💻','📱','🖥️',
+  '🎨','🖌️','🎭','🎬','🎵','🎸','🎹','🎺','🎻','🥁',
+  '⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🎱','🏓',
+  '🦄','🐉','🦊','🐱','🐶','🐰','🐧','🦁','🐨','🐸',
+  '🦋','🐬','🦕','🦖','🐳','🦅','🦚','🦜','🐙','🦑',
+  '🌸','🌺','🌻','🌹','🍀','🌵','🌴','🎋','🍄','🌿',
+  '🍭','🍦','🎂','🍩','🍪','🍕','🌮','🍜','🧁','🍫',
+  '💎','💍','👒','🎩','🧢','👟','🎒','🧸','🪆','🗝️',
+  '🎠','🎡','🎢','🎪','🎯','🧩','🪄','🔮','🪅','🎁',
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💗','💖',
+];
+
 
 const MASCOTS = [
   `<svg viewBox="0 0 140 150" width="120" height="128" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="138" rx="30" ry="8" fill="#FFD580" opacity="0.3"/><ellipse cx="108" cy="110" rx="10" ry="16" fill="#FF922B" transform="rotate(30,108,110)"/><ellipse cx="112" cy="105" rx="7" ry="12" fill="#FFD700" transform="rotate(20,112,105)"/><path d="M88,105 Q100,108 108,110" stroke="#FF6B35" stroke-width="8" fill="none" stroke-linecap="round"/><ellipse cx="68" cy="100" rx="28" ry="32" fill="#FF8C42"/><ellipse cx="68" cy="105" rx="18" ry="20" fill="#FFD580"/><ellipse cx="56" cy="128" rx="10" ry="8" fill="#FF8C42"/><ellipse cx="80" cy="128" rx="10" ry="8" fill="#FF8C42"/><ellipse cx="40" cy="100" rx="9" ry="14" fill="#FF8C42" transform="rotate(-15,40,100)"/><ellipse cx="96" cy="98" rx="9" ry="14" fill="#FF8C42" transform="rotate(15,96,98)"/><circle cx="68" cy="68" r="30" fill="#FF8C42"/><ellipse cx="58" cy="63" rx="9" ry="10" fill="white"/><ellipse cx="78" cy="63" rx="9" ry="10" fill="white"/><circle cx="60" cy="65" r="6" fill="#222"/><circle cx="80" cy="65" r="6" fill="#222"/><circle cx="62" cy="63" r="2.5" fill="white"/><circle cx="82" cy="63" r="2.5" fill="white"/><ellipse cx="49" cy="72" rx="6" ry="4" fill="#FF6B6B" opacity="0.6"/><ellipse cx="87" cy="72" rx="6" ry="4" fill="#FF6B6B" opacity="0.6"/><path d="M62,76 Q68,82 74,76" stroke="#C04020" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="55" cy="42" rx="7" ry="12" fill="#FF8C42" transform="rotate(-10,55,42)"/><ellipse cx="81" cy="42" rx="7" ry="12" fill="#FF8C42" transform="rotate(10,81,42)"/></svg>`,
@@ -469,10 +493,7 @@ function renderMain() {
   let blocksHtml = '';
   m.pages.forEach((state, i) => {
     const page = m.startPage + i;
-    const cls = state===2?'done2':state===1?'done1':'';
-    const d1ts = m.dates1&&m.dates1[i] ? fmtDate(m.dates1[i]) : '';
-    const tip = state===1&&d1ts ? `완료: ${d1ts}` : state===2&&m.dates2&&m.dates2[i] ? `오답/복습: ${fmtDate(m.dates2[i])}` : '';
-    blocksHtml += `<div class="block ${cls}"${tip?` data-tip="${tip}"`:''}  id="block${i}" onclick="toggleBlock(${i})"><span class="bnum">${page}</span>${state===1&&d1ts?`<span class="bdate">${d1ts}</span>`:''}<span class="trophy">${getTrophy(i)}</span></div>`;
+    blocksHtml += makeBlockHtml(state, page, i, m.dates1, m.dates2);
   });
 
   const goalHtml = m.goalDate ? `<div class="card goal-card"><div class="goal-row"><div><div class="goal-label">🎯 목표 날짜</div><div class="goal-sub">${m.goalDate}</div></div><div class="goal-val">${goalDays>=0?'D-'+goalDays:'기간 지남!'}</div></div></div>` : '';
@@ -512,12 +533,9 @@ function toggleBlock(i) {
   else { m.dates1[i]=null; m.dates2[i]=null; }
   const el = document.getElementById('block'+i);
   if (el) {
-    const state = m.pages[i];
-    const cls = state===2?'done2':state===1?'done1':'';
-    const dateStr = state===1 ? fmtDate(now) : state===2 ? fmtDate(now) : '';
-    el.className = 'block ' + cls + ' popping';
-    el.innerHTML = `<span class="bnum">${m.startPage+i}</span>${dateStr&&state!==2?`<span class="bdate">${dateStr}</span>`:''}<span class="trophy">${getTrophy(i)}</span>`;
-    setTimeout(()=>{ if(el) el.classList.remove('popping'); },300);
+    el.outerHTML = makeBlockHtml(m.pages[i], m.startPage+i, i, m.dates1, m.dates2);
+    const newEl = document.getElementById('block'+i);
+    if (newEl) { newEl.classList.add('popping'); setTimeout(()=>newEl.classList.remove('popping'), 300); }
   }
   playSound(m.pages[i]);
   saveAll();

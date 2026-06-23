@@ -8,22 +8,27 @@
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min-height:100vh; }
 .header { background:linear-gradient(135deg,#FFB300,#FF8F00); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; }
-.logo-wrap { display:flex; align-items:center; gap:8px; cursor:pointer; border-radius:10px; padding:4px 8px; }
-.logo-wrap:hover { background:rgba(255,255,255,0.15); }
-.logo-icon { font-size:24px; }
-.logo-text { color:white; font-size:18px; font-weight:800; }
-.logo-hint { color:rgba(255,255,255,0.7); font-size:10px; }
-.sync-badge { background:rgba(255,255,255,0.25); border-radius:20px; padding:5px 12px; color:white; font-size:12px; font-weight:700; }
+.logo-wrap { display:flex; align-items:center; gap:8px; }
+.logo-icon { font-size:28px; cursor:pointer; transition:transform 0.15s; user-select:none; }
+.logo-icon:hover { transform:scale(1.15); }
+.logo-text { color:white; font-size:18px; font-weight:800; outline:none; cursor:text; border-bottom:2px solid transparent; transition:border-color 0.2s; min-width:40px; }
+.logo-text:focus { border-bottom:2px solid rgba(255,255,255,0.7); }
+.sync-badge { background:rgba(255,255,255,0.25); border-radius:20px; padding:5px 12px; color:white; font-size:12px; font-weight:700; white-space:nowrap; }
 .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; border-top:2px solid #EEE; display:flex; z-index:50; }
 .nav-btn { flex:1; padding:10px 4px 8px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; font-size:10px; font-weight:700; color:#AAA; border:none; background:none; }
 .nav-btn .nav-icon { font-size:22px; }
 .nav-btn.active { color:#FFB300; }
 .page { display:none; padding:14px 14px 80px; max-width:700px; margin:0 auto; }
 .page.show { display:block; }
-.tabs-wrap { background:white; border-bottom:2px solid #EEE; display:flex; overflow-x:auto; padding:0 10px; }
+
+/* 미션 탭 */
+.mission-header { background:white; border-radius:18px 18px 0 0; border:2px solid #EEE; border-bottom:none; overflow:hidden; }
+.tabs-wrap { display:flex; overflow-x:auto; padding:0 10px; border-bottom:2px solid #EEE; }
 .tab { padding:11px 14px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; color:#999; transition:all 0.2s; }
 .tab.active { color:#FFB300; border-bottom-color:#FFB300; }
 .tab-add { padding:11px 12px; color:#FFB300; font-size:20px; cursor:pointer; font-weight:700; }
+.mission-body { background:white; border:2px solid #EEE; border-top:none; border-radius:0 0 18px 18px; padding:16px; margin-bottom:14px; }
+
 .card { background:white; border-radius:18px; padding:16px; margin-bottom:14px; border:2px solid #EEE; }
 .mascot-card { text-align:center; }
 .mascot-float { animation:mFloat 3s ease-in-out infinite; display:inline-block; }
@@ -47,17 +52,14 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
 .block { width:50px; height:50px; border-radius:11px; border:2px solid #EEE; background:#F7F7F7; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#CCC; transition:all 0.15s; user-select:none; gap:1px; position:relative; }
 .block:hover { transform:scale(1.08); }
 .block:active { transform:scale(0.95); }
-.block .bdate { font-size:7.5px; color:#bbb; }
-.block.done1 { background:#FFF0A3; border-color:#FFD700; color:#B8860B; }
-.block.done1 .bdate { color:#B8860B; opacity:0.8; }
+.block .bdate { font-size:8px; font-weight:700; }
+.block.done1 { background:#FFF0A3; border-color:#FFD700; }
 .block.done2 { background:#C8F5A0; border-color:#58CC02; }
-.block.done2 .bnum,.block.done2 .bdate { display:none; }
-.block.done2 .trophy { display:flex; align-items:center; justify-content:center; width:100%; height:100%; animation:trophyPop 0.4s cubic-bezier(.34,1.56,.64,1); }
 .block .trophy { display:none; }
+.block.done2 .trophy { display:flex; align-items:center; justify-content:center; width:100%; height:100%; animation:trophyPop 0.4s cubic-bezier(.34,1.56,.64,1); }
 .block.popping { animation:blockPop 0.3s cubic-bezier(.34,1.56,.64,1); }
 @keyframes blockPop { 0%{transform:scale(1)} 50%{transform:scale(1.22)} 100%{transform:scale(1)} }
 @keyframes trophyPop { 0%{transform:scale(0) rotate(-20deg)} 100%{transform:scale(1) rotate(0deg)} }
-.block[data-tip]:hover::after { content:attr(data-tip); position:absolute; bottom:110%; left:50%; transform:translateX(-50%); background:#333; color:white; font-size:9px; padding:3px 6px; border-radius:5px; white-space:nowrap; pointer-events:none; z-index:10; }
 .legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
 .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:#666; }
 .legend-dot { width:14px; height:14px; border-radius:3px; border:2px solid; }
@@ -97,7 +99,9 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
 .custom-time input:focus { border-color:#FFB300; }
 .custom-time label { font-size:12px; color:#888; font-weight:600; }
 .timer-log-title { font-size:12px; font-weight:700; color:#999; margin-bottom:8px; }
-.log-item { display:flex; justify-content:space-between; font-size:12px; color:#666; padding:5px 0; border-bottom:1px solid #F0F0F0; }
+.log-item { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#666; padding:6px 0; border-bottom:1px solid #F0F0F0; }
+.log-del { background:none; border:none; color:#FFB3B3; font-size:14px; cursor:pointer; padding:0 4px; }
+.log-del:hover { color:#FF6B6B; }
 .music-type-btn { padding:8px 14px; border-radius:10px; border:2px solid #EEE; background:white; font-size:12px; font-weight:700; color:#666; cursor:pointer; }
 .music-type-btn.active { border-color:#FFB300; background:#FFF8E1; color:#FFB300; }
 .bar-vis { transition:height 0.4s ease; }
@@ -116,13 +120,9 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
 .btn-primary { flex:1; background:#FFB300; color:white; border:none; border-radius:11px; padding:13px; font-size:15px; font-weight:800; cursor:pointer; }
 .btn-primary:hover { background:#FF8F00; }
 .btn-cancel { flex:1; background:white; color:#999; border:2px solid #EEE; border-radius:11px; padding:13px; font-size:15px; font-weight:700; cursor:pointer; }
-.name-preview { display:flex; align-items:center; gap:10px; background:#f5f5f5; border-radius:12px; padding:11px 14px; margin-bottom:14px; }
-.name-preview-icon { font-size:26px; }
-.name-preview-text { font-size:16px; font-weight:800; color:#333; }
-.icon-picker-label { font-size:12px; font-weight:700; color:#888; margin-bottom:7px; }
-.icon-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:5px; margin-bottom:14px; max-height:180px; overflow-y:auto; }
-.icon-btn { font-size:21px; border:2px solid transparent; border-radius:9px; padding:3px; cursor:pointer; background:none; }
-.icon-btn:hover { background:#f0f0f0; }
+.icon-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:5px; margin-bottom:14px; max-height:300px; overflow-y:auto; }
+.icon-btn { font-size:22px; border:2px solid transparent; border-radius:9px; padding:4px; cursor:pointer; background:none; text-align:center; transition:all 0.1s; }
+.icon-btn:hover { background:#f0f0f0; transform:scale(1.15); }
 .icon-btn.selected { border-color:#FFB300; background:#FFF8E1; }
 .confetti-container { position:fixed; inset:0; pointer-events:none; z-index:200; overflow:hidden; }
 .confetti-piece { position:absolute; border-radius:2px; animation:confettiFall linear forwards; }
@@ -134,17 +134,20 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
 
 <div class="header">
   <div class="logo-wrap">
-    <span class="logo-icon" id="appIcon" onclick="openIconModal()" style="cursor:pointer">📚</span>
-    <div>
-      <div class="logo-text" id="appTitle" contenteditable="true" onblur="saveAppTitleInline(this)" onclick="this.focus()" style="cursor:text;outline:none;min-width:60px">지율이의 미션 체크</div>
-    </div>
+    <span class="logo-icon" id="appIcon" onclick="openIconModal()">📚</span>
+    <div class="logo-text" id="appTitle" contenteditable="true" spellcheck="false" onblur="saveAppTitleInline(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">지율이의 미션 체크</div>
   </div>
   <div class="sync-badge" id="syncBadge">🔄 연결중...</div>
 </div>
 
 <div class="page show" id="page-missions">
-  <div class="tabs-wrap" id="tabsWrap"></div>
-  <div id="mainContent"><div class="loading">🔄 불러오는 중...</div></div>
+  <div class="mission-header">
+    <div class="tabs-wrap" id="tabsWrap"></div>
+  </div>
+  <div class="mission-body" id="missionBody">
+    <div class="loading">🔄 불러오는 중...</div>
+  </div>
+  <div id="mainContent"></div>
 </div>
 
 <div class="page" id="page-completed">
@@ -182,12 +185,13 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
     </div>
   </div>
   <div class="card">
-    <div class="timer-log-title">📋 오늘 공부 기록</div>
+    <div class="timer-log-title">📋 공부 기록</div>
     <div id="timerLog"><div style="color:#CCC;font-size:12px;text-align:center;padding:12px">아직 기록이 없어요</div></div>
-    <div style="margin-top:8px;font-size:12px;color:#888;display:flex;justify-content:space-between">
-      <span>오늘 총 공부시간</span>
-      <span id="totalStudy" style="font-weight:700;color:#FFB300">0분</span>
+    <div style="margin-top:10px;font-size:12px;color:#888;display:flex;justify-content:space-between;align-items:center">
+      <span>누적 총 공부시간</span>
+      <span id="totalStudy" style="font-weight:800;color:#FFB300;font-size:14px">0분</span>
     </div>
+    <button onclick="exportData()" style="margin-top:14px;width:100%;padding:10px;background:#FFF8E1;border:2px solid #FFB300;border-radius:12px;color:#FFB300;font-size:13px;font-weight:700;cursor:pointer">📥 전체 데이터 내보내기</button>
   </div>
 </div>
 
@@ -234,6 +238,7 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
   <button class="nav-btn" id="nav-music" onclick="showPage('music')"><span class="nav-icon">🎧</span>음악</button>
 </div>
 
+<!-- 미션 모달 -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <h2 id="modalTitle">✏️ 새 미션 만들기</h2>
@@ -252,38 +257,19 @@ body { font-family:'Segoe UI','Noto Sans KR',sans-serif; background:#FFF9F0; min
   </div>
 </div>
 
-<!-- 아이콘 선택 모달 -->
+<!-- 아이콘 모달 -->
 <div class="modal-bg" id="iconModalBg">
   <div class="modal">
     <h2>아이콘 선택</h2>
-    <div class="icon-grid" id="iconGridMain" style="max-height:320px"></div>
+    <div class="icon-grid" id="iconGridMain"></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeIconModal()">닫기</button>
-    </div>
-  </div>
-</div>
-  <div class="modal">
-    <h2>앱 이름 & 아이콘</h2>
-    <div class="name-preview">
-      <span class="name-preview-icon" id="previewIcon">📚</span>
-      <span class="name-preview-text" id="previewText">지율이의 미션 체크</span>
-    </div>
-    <div style="margin-bottom:10px">
-      <label style="font-size:12px;font-weight:700;color:#888;display:block;margin-bottom:5px">앱 이름</label>
-      <input id="appNameInput" maxlength="20" oninput="updatePreview()" style="margin-bottom:0">
-    </div>
-    <div class="icon-picker-label">아이콘 선택</div>
-    <div class="icon-grid" id="iconGrid"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeNameModal()">취소</button>
-      <button class="btn-primary" onclick="saveAppName()">저장 ✅</button>
     </div>
   </div>
 </div>
 
 <div class="confetti-container" id="confettiContainer"></div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
@@ -297,39 +283,27 @@ const firebaseConfig = {
   messagingSenderId: "268649375648",
   appId: "1:268649375648:web:3e47edccfec9b613c0e6c5"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ── 데이터 저장/로드 ──────────────────────
-function saveToFirebase(data) {
-  set(ref(db, 'studyApp'), data).catch(e => console.error(e));
-}
+function saveToFirebase(data) { set(ref(db,'studyApp'), data).catch(e=>console.error(e)); }
+function loadFromFirebase(cb) { onValue(ref(db,'studyApp'), snap=>cb(snap.val())); }
 
-function loadFromFirebase(cb) {
-  onValue(ref(db, 'studyApp'), snap => {
-    cb(snap.val());
-  });
-}
-
-// ── 상수 ──────────────────────────────────
+// ── 아이콘 목록 ──
 const ICON_LIST = [
-  '📚','📖','✏️','🖊️','📝','📓','📔','📒','📕','📗','📘','📙',
-  '🎯','🏆','🥇','🥈','🥉','🎖️','🏅','👑',
-  '🌟','⭐','💫','✨','🌈','☀️','🌙','⚡','🔥','❄️',
-  '🎮','🕹️','🚀','🛸','🛩️','🚂','🚗','🏎️',
-  '💡','🔭','🔬','⚗️','🧪','🧬','💻','📱','🖥️',
-  '🎨','🖌️','🎭','🎬','🎵','🎸','🎹','🎺','🎻','🥁',
-  '⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🎱','🏓',
-  '🦄','🐉','🦊','🐱','🐶','🐰','🐧','🦁','🐨','🐸',
-  '🦋','🐬','🦕','🦖','🐳','🦅','🦚','🦜','🐙','🦑',
-  '🌸','🌺','🌻','🌹','🍀','🌵','🌴','🎋','🍄','🌿',
-  '🍭','🍦','🎂','🍩','🍪','🍕','🌮','🍜','🧁','🍫',
-  '💎','💍','👒','🎩','🧢','👟','🎒','🧸','🪆','🗝️',
-  '🎠','🎡','🎢','🎪','🎯','🧩','🪄','🔮','🪅','🎁',
-  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💗','💖',
+  '📚','📖','✏️','🖊️','📝','📓','📔','📒','📕','📗','📘','📙','📃','📄','📜',
+  '🎯','🏆','🥇','🥈','🥉','🎖️','🏅','👑','🎗️','🏵️',
+  '🌟','⭐','💫','✨','🌈','☀️','🌙','⚡','🔥','❄️','🌊','🌪️','🌸','🌺','🌻',
+  '🎮','🕹️','🚀','🛸','🚂','🚗','🏎️','🚁','⛵','🎡','🎢','🎠',
+  '💡','🔭','🔬','⚗️','🧪','🧬','💻','📱','🖥️','⌨️','🖱️','📡',
+  '🎨','🖌️','🖍️','🎭','🎬','🎵','🎸','🎹','🎺','🎻','🥁','🪗',
+  '⚽','🏀','🏈','⚾','🎾','🏐','🎱','🏓','🏸','🥊','🎿','🛹',
+  '🦄','🐉','🦊','🐱','🐶','🐰','🐧','🦁','🐨','🐸','🐯','🦝',
+  '🦋','🐬','🦕','🦖','🐳','🦅','🦚','🦜','🐙','🦑','🦋','🐝',
+  '🍭','🍦','🎂','🍩','🍪','🍕','🌮','🍜','🧁','🍫','🍬','🧃',
+  '💎','💍','🧸','🪆','🗝️','🎁','🪄','🔮','🧩','🪅','🎀','🛍️',
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💗','💖','💝','💘',
 ];
-
 
 const MASCOTS = [
   `<svg viewBox="0 0 140 150" width="120" height="128" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="138" rx="30" ry="8" fill="#FFD580" opacity="0.3"/><ellipse cx="108" cy="110" rx="10" ry="16" fill="#FF922B" transform="rotate(30,108,110)"/><ellipse cx="112" cy="105" rx="7" ry="12" fill="#FFD700" transform="rotate(20,112,105)"/><path d="M88,105 Q100,108 108,110" stroke="#FF6B35" stroke-width="8" fill="none" stroke-linecap="round"/><ellipse cx="68" cy="100" rx="28" ry="32" fill="#FF8C42"/><ellipse cx="68" cy="105" rx="18" ry="20" fill="#FFD580"/><ellipse cx="56" cy="128" rx="10" ry="8" fill="#FF8C42"/><ellipse cx="80" cy="128" rx="10" ry="8" fill="#FF8C42"/><ellipse cx="40" cy="100" rx="9" ry="14" fill="#FF8C42" transform="rotate(-15,40,100)"/><ellipse cx="96" cy="98" rx="9" ry="14" fill="#FF8C42" transform="rotate(15,96,98)"/><circle cx="68" cy="68" r="30" fill="#FF8C42"/><ellipse cx="58" cy="63" rx="9" ry="10" fill="white"/><ellipse cx="78" cy="63" rx="9" ry="10" fill="white"/><circle cx="60" cy="65" r="6" fill="#222"/><circle cx="80" cy="65" r="6" fill="#222"/><circle cx="62" cy="63" r="2.5" fill="white"/><circle cx="82" cy="63" r="2.5" fill="white"/><ellipse cx="49" cy="72" rx="6" ry="4" fill="#FF6B6B" opacity="0.6"/><ellipse cx="87" cy="72" rx="6" ry="4" fill="#FF6B6B" opacity="0.6"/><path d="M62,76 Q68,82 74,76" stroke="#C04020" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="55" cy="42" rx="7" ry="12" fill="#FF8C42" transform="rotate(-10,55,42)"/><ellipse cx="81" cy="42" rx="7" ry="12" fill="#FF8C42" transform="rotate(10,81,42)"/></svg>`,
@@ -341,7 +315,7 @@ const MASCOTS = [
 
 const TROPHIES = [
   `<svg viewBox="0 0 40 40" width="32" height="32"><circle cx="20" cy="22" r="13" fill="#FFD580"/><polygon points="8,12 13,22 3,22" fill="#FFD580"/><polygon points="32,12 37,22 27,22" fill="#FFD580"/><circle cx="20" cy="22" r="10" fill="#FFE9A0"/><circle cx="15" cy="20" r="2" fill="#333"/><circle cx="25" cy="20" r="2" fill="#333"/><circle cx="15.7" cy="19.3" r="0.7" fill="white"/><circle cx="25.7" cy="19.3" r="0.7" fill="white"/><ellipse cx="20" cy="25" rx="3" ry="2" fill="#FFB3C6"/></svg>`,
-  `<svg viewBox="0 0 40 40" width="32" height="32"><ellipse cx="20" cy="23" rx="13" ry="11" fill="#C8A87A"/><ellipse cx="10" cy="16" rx="5" ry="7" fill="#C8A87A" transform="rotate(-20,10,16)"/><ellipse cx="30" cy="16" rx="5" ry="7" fill="#B8985A" transform="rotate(20,30,16)"/><ellipse cx="20" cy="23" rx="10" ry="8" fill="#E8D0A0"/><circle cx="15.5" cy="21" r="2" fill="#333"/><circle cx="24.5" cy="21" r="2" fill="#333"/><circle cx="16.2" cy="20.3" r="0.7" fill="white"/><circle cx="25.2" cy="20.3" r="0.7" fill="white"/></svg>`,
+  `<svg viewBox="0 0 40 40" width="32" height="32"><ellipse cx="20" cy="23" rx="13" ry="11" fill="#C8A87A"/><ellipse cx="10" cy="16" rx="5" ry="7" fill="#C8A87A" transform="rotate(-20,10,16)"/><ellipse cx="30" cy="16" rx="5" ry="7" fill="#B8985A" transform="rotate(20,30,16)"/><ellipse cx="20" cy="23" rx="10" ry="8" fill="#E8D0A0"/><circle cx="15.5" cy="21" r="2" fill="#333"/><circle cx="24.5" cy="21" r="2" fill="#333"/></svg>`,
   `<svg viewBox="0 0 40 40" width="32" height="32"><ellipse cx="13" cy="14" rx="4" ry="10" fill="white"/><ellipse cx="27" cy="14" rx="4" ry="10" fill="white"/><ellipse cx="13" cy="15" rx="2" ry="7" fill="#FFB3C6"/><ellipse cx="27" cy="15" rx="2" ry="7" fill="#FFB3C6"/><circle cx="20" cy="26" r="12" fill="white"/><circle cx="15.5" cy="24" r="2" fill="#555"/><circle cx="24.5" cy="24" r="2" fill="#555"/><ellipse cx="20" cy="28" rx="2.5" ry="1.8" fill="#FFB3C6"/></svg>`,
   `<svg viewBox="0 0 40 40" width="32" height="32"><circle cx="11" cy="14" r="6" fill="#A0785A"/><circle cx="29" cy="14" r="6" fill="#A0785A"/><circle cx="20" cy="24" r="14" fill="#C8A87A"/><circle cx="20" cy="24" r="11" fill="#E8C89A"/><circle cx="15" cy="21" r="2.2" fill="#333"/><circle cx="25" cy="21" r="2.2" fill="#333"/><circle cx="15.8" cy="20.2" r="0.8" fill="white"/><circle cx="25.8" cy="20.2" r="0.8" fill="white"/></svg>`,
   `<svg viewBox="0 0 40 40" width="32" height="32"><ellipse cx="20" cy="24" rx="12" ry="14" fill="#333"/><ellipse cx="20" cy="26" rx="7" ry="9" fill="white"/><circle cx="17" cy="20" r="2" fill="white"/><circle cx="23" cy="20" r="2" fill="white"/><circle cx="17.5" cy="19.5" r="0.8" fill="#111"/><circle cx="23.5" cy="19.5" r="0.8" fill="#111"/><ellipse cx="20" cy="24" rx="3" ry="1.5" fill="#FF922B"/></svg>`,
@@ -360,149 +334,130 @@ const MISSION_THEMES = [
   { tab:'#20C997', light:'#EDFAF5', border:'#9BE8CE', progress:'linear-gradient(90deg,#20C997,#70DEB8)' },
 ];
 
-// ── 앱 상태 ──────────────────────────────────
-let missions = [];
-let activeIdx = 0;
-let appTitle = '지율이의 미션 체크';
-let appIcon = '📚';
-let selectedIcon = appIcon;
-let editMode = false;
-let timerMode = 'stopwatch';
-let timerRunning = false;
-let timerInterval = null;
-let timerSeconds = 0;
-let countdownTarget = 0;
-let timerLogs = JSON.parse(localStorage.getItem('timerLogs') || '[]');
-let musicPlaying = false;
-let musicNodes = [];
-let musicGain = null;
-let musicType = 'alpha';
-let vizInterval = null;
+let missions=[], activeIdx=0, appTitle='지율이의 미션 체크', appIcon='📚';
+let editMode=false, timerMode='stopwatch', timerRunning=false, timerInterval=null, timerSeconds=0, countdownTarget=0;
+let timerLogs = JSON.parse(localStorage.getItem('timerLogs')||'[]');
+let musicPlaying=false, musicNodes=[], musicGain=null, musicType='alpha', vizInterval=null;
 
-// ── Firebase 실시간 동기화 ──────────────────
-loadFromFirebase(data => {
-  if (data) {
-    // Firebase가 배열을 객체로 변환하는 문제 처리
-    const rawMissions = data.missions || [];
-    missions = Object.values(rawMissions).map(m => ({
-      ...m,
-      pages: Object.values(m.pages || []),
-      dates1: Object.values(m.dates1 || []),
-      dates2: Object.values(m.dates2 || []),
-    }));
-    activeIdx = data.activeIdx || 0;
-    appTitle = data.appTitle || '지율이의 미션 체크';
-    appIcon = data.appIcon || '📚';
+function saveToFirebase2(data){ set(ref(db,'studyApp'),data).catch(e=>console.error(e)); }
+
+loadFromFirebase(data=>{
+  if(data){
+    const raw=data.missions||[];
+    missions=Object.values(raw).map(m=>({...m,pages:Object.values(m.pages||[]),dates1:Object.values(m.dates1||[]),dates2:Object.values(m.dates2||[])}));
+    activeIdx=data.activeIdx||0; appTitle=data.appTitle||'지율이의 미션 체크'; appIcon=data.appIcon||'📚';
   }
-  applyAppMeta();
-  render();
-  document.getElementById('syncBadge').textContent = '☁️ 동기화됨';
+  applyAppMeta(); render();
+  document.getElementById('syncBadge').textContent='☁️ 동기화됨';
 });
 
-function saveAll() {
-  saveToFirebase({ missions, activeIdx, appTitle, appIcon });
-}
+setInterval(()=>{
+  document.getElementById('syncBadge').textContent='🔄 업데이트중...';
+  get(ref(db,'studyApp')).then(snap=>{
+    const data=snap.val();
+    if(data){
+      const raw=data.missions||[];
+      missions=Object.values(raw).map(m=>({...m,pages:Object.values(m.pages||[]),dates1:Object.values(m.dates1||[]),dates2:Object.values(m.dates2||[])}));
+      activeIdx=data.activeIdx||0; appTitle=data.appTitle||'지율이의 미션 체크'; appIcon=data.appIcon||'📚';
+      applyAppMeta(); render();
+    }
+    document.getElementById('syncBadge').textContent='☁️ 동기화됨';
+  }).catch(()=>{ document.getElementById('syncBadge').textContent='❌ 연결오류'; });
+},30000);
 
-// ── 유틸 ──────────────────────────────────
-function getTheme(i) { return MISSION_THEMES[i % MISSION_THEMES.length]; }
-function getMascot(i) { return MASCOTS[i % MASCOTS.length]; }
-function getTrophy(i) { return TROPHIES[i % TROPHIES.length]; }
-function getStats(m) {
-  const total = m.pages.length, d1 = m.pages.filter(p=>p===1).length, d2 = m.pages.filter(p=>p===2).length;
-  return { total, d1, d2, pct: total ? Math.round(((d1+d2)/total)*100) : 0 };
-}
-function fmtDate(ts) { if(!ts) return ''; const d=new Date(ts); return `${d.getMonth()+1}/${d.getDate()}`; }
-function isCompleted(m) { return m.pages.length > 0 && m.pages.every(p => p === 2); }
-function applyAppMeta() { document.getElementById('appTitle').textContent = appTitle; document.getElementById('appIcon').textContent = appIcon; }
+function saveAll(){ saveToFirebase2({missions,activeIdx,appTitle,appIcon}); document.getElementById('syncBadge').textContent='🔄 저장중...'; setTimeout(()=>document.getElementById('syncBadge').textContent='☁️ 동기화됨',1000); }
+function applyAppMeta(){ document.getElementById('appTitle').textContent=appTitle; document.getElementById('appIcon').textContent=appIcon; }
+function getTheme(i){ return MISSION_THEMES[i%MISSION_THEMES.length]; }
+function getMascot(i){ return MASCOTS[i%MASCOTS.length]; }
+function getTrophy(i){ return TROPHIES[i%TROPHIES.length]; }
+function getStats(m){ const total=m.pages.length,d1=m.pages.filter(p=>p===1).length,d2=m.pages.filter(p=>p===2).length; return{total,d1,d2,pct:total?Math.round(((d1+d2)/total)*100):0}; }
+function fmtDate(ts){ if(!ts)return''; const d=new Date(ts); return`${d.getMonth()+1}/${d.getDate()}`; }
+function isCompleted(m){ return m.pages.length>0&&m.pages.every(p=>p===2); }
 
-// ── 페이지 전환 ──────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('show');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'completed') renderCompleted();
-  if (name === 'timer') renderTimerLog();
-}
-window.showPage = showPage;
+// 앱 타이틀 인라인 수정
+window.saveAppTitleInline=function(el){
+  const val=el.textContent.trim();
+  if(val){ appTitle=val; saveAll(); }
+  else { el.textContent=appTitle; }
+};
 
-// ── 앱 이름 모달 ──────────────────────────────
-function openNameModal() {
-  selectedIcon = appIcon;
-  document.getElementById('appNameInput').value = appTitle;
-  document.getElementById('previewText').textContent = appTitle;
-  document.getElementById('previewIcon').textContent = appIcon;
-  const grid = document.getElementById('iconGrid');
-  grid.innerHTML = '';
-  ICON_LIST.forEach(ic => {
-    const btn = document.createElement('button');
-    btn.className = 'icon-btn' + (ic === selectedIcon ? ' selected' : '');
-    btn.textContent = ic;
-    btn.onclick = () => { selectedIcon = ic; document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('previewIcon').textContent = ic; };
+// 아이콘 모달
+window.openIconModal=function(){
+  const grid=document.getElementById('iconGridMain'); grid.innerHTML='';
+  ICON_LIST.forEach(ic=>{
+    const btn=document.createElement('button');
+    btn.className='icon-btn'+(ic===appIcon?' selected':'');
+    btn.textContent=ic;
+    btn.onclick=()=>{ appIcon=ic; saveAll(); applyAppMeta(); closeIconModal(); };
     grid.appendChild(btn);
   });
-  document.getElementById('nameModalBg').classList.add('show');
-}
-function closeNameModal() { document.getElementById('nameModalBg').classList.remove('show'); }
-function updatePreview() { document.getElementById('previewText').textContent = document.getElementById('appNameInput').value || '앱 이름'; }
-function saveAppName() {
-  const val = document.getElementById('appNameInput').value.trim();
-  if (!val) { alert('이름을 입력해주세요!'); return; }
-  appTitle = val; appIcon = selectedIcon;
-  applyAppMeta(); saveAll(); closeNameModal();
-}
-window.openNameModal = openNameModal;
-window.closeNameModal = closeNameModal;
-window.updatePreview = updatePreview;
-window.saveAppName = saveAppName;
+  document.getElementById('iconModalBg').classList.add('show');
+};
+window.closeIconModal=function(){ document.getElementById('iconModalBg').classList.remove('show'); };
 
-// ── 렌더 ──────────────────────────────────
-function renderTabs() {
-  const w = document.getElementById('tabsWrap');
-  w.innerHTML = '';
-  const active = missions.filter(m => !isCompleted(m));
-  active.forEach((m) => {
-    const i = missions.indexOf(m);
-    const theme = getTheme(active.indexOf(m));
-    const t = document.createElement('div');
-    t.className = 'tab' + (i === activeIdx ? ' active' : '');
-    if (i === activeIdx) { t.style.color = theme.tab; t.style.borderBottomColor = theme.tab; }
-    t.textContent = m.name;
-    t.onclick = () => { activeIdx = i; saveAll(); renderMain(); };
+// 페이지 전환
+window.showPage=function(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('show');
+  document.getElementById('nav-'+name).classList.add('active');
+  if(name==='completed') renderCompleted();
+  if(name==='timer') renderTimerLog();
+};
+
+// 블럭 HTML 생성
+function makeBlockHtml(state,page,i,dates1,dates2){
+  const cls=state===2?'done2':state===1?'done1':'';
+  const dateStr=state===1?fmtDate((dates1||[])[i]):state===2?fmtDate((dates2||[])[i]):'';
+  const dateColor=state===1?'#B8860B':'#2D8600';
+  return `<div class="block ${cls}" id="block${i}" onclick="toggleBlock(${i})">
+    ${state===0?`<span class="bnum" style="font-size:11px;color:#CCC">${page}</span>`:''}
+    ${(state===1||state===2)&&dateStr?`<span class="bdate" style="color:${dateColor}">${dateStr}</span>`:''}
+    <span class="trophy">${getTrophy(i)}</span>
+  </div>`;
+}
+
+// 렌더
+function renderTabs(){
+  const w=document.getElementById('tabsWrap'); w.innerHTML='';
+  const active=missions.filter(m=>!isCompleted(m));
+  active.forEach(m=>{
+    const i=missions.indexOf(m), theme=getTheme(active.indexOf(m));
+    const t=document.createElement('div');
+    t.className='tab'+(i===activeIdx?' active':'');
+    if(i===activeIdx){t.style.color=theme.tab;t.style.borderBottomColor=theme.tab;}
+    t.textContent=m.name; t.onclick=()=>{activeIdx=i;saveAll();renderMain();};
     w.appendChild(t);
   });
-  const add = document.createElement('div');
-  add.className = 'tab-add'; add.textContent = '+'; add.onclick = openModal;
+  const add=document.createElement('div');
+  add.className='tab-add'; add.textContent='+'; add.onclick=openModal;
   w.appendChild(add);
 }
 
-function renderMain() {
-  const c = document.getElementById('mainContent');
-  const activeMissions = missions.filter(m => !isCompleted(m));
-  if (!activeMissions.length) {
-    c.innerHTML = `<div class="card" style="text-align:center;padding:32px 20px"><div style="font-size:48px;margin-bottom:12px">🎯</div><div style="font-size:15px;font-weight:700;color:#444;margin-bottom:6px">첫 번째 미션을 만들어봐요!</div></div><button class="add-btn-small" onclick="openModal()">+ 새 미션 만들기</button>`;
+function renderMain(){
+  const body=document.getElementById('missionBody');
+  const extra=document.getElementById('mainContent');
+  const activeMissions=missions.filter(m=>!isCompleted(m));
+  if(!activeMissions.length){
+    body.innerHTML=`<div style="text-align:center;padding:32px 20px"><div style="font-size:48px;margin-bottom:12px">🎯</div><div style="font-size:15px;font-weight:700;color:#444">첫 번째 미션을 만들어봐요!</div></div>`;
+    extra.innerHTML=`<button class="add-btn-small" onclick="openModal()">+ 새 미션 만들기</button>`;
     renderTabs(); return;
   }
-  if (activeIdx >= missions.length || isCompleted(missions[activeIdx])) activeIdx = missions.indexOf(activeMissions[0]);
-  const m = missions[activeIdx];
-  const { total, d1, d2, pct } = getStats(m);
-  const themeIdx = activeMissions.indexOf(m);
-  const theme = getTheme(themeIdx);
-  const goalDays = m.goalDate ? Math.ceil((new Date(m.goalDate) - new Date()) / 86400000) : null;
+  if(activeIdx>=missions.length||isCompleted(missions[activeIdx])) activeIdx=missions.indexOf(activeMissions[0]);
+  const m=missions[activeIdx];
+  const {total,d1,d2,pct}=getStats(m);
+  const themeIdx=activeMissions.indexOf(m);
+  const theme=getTheme(themeIdx);
+  const goalDays=m.goalDate?Math.ceil((new Date(m.goalDate)-new Date())/86400000):null;
 
-  let blocksHtml = '';
-  m.pages.forEach((state, i) => {
-    const page = m.startPage + i;
-    blocksHtml += makeBlockHtml(state, page, i, m.dates1, m.dates2);
-  });
+  let blocksHtml='';
+  m.pages.forEach((state,i)=>{ blocksHtml+=makeBlockHtml(state,m.startPage+i,i,m.dates1,m.dates2); });
 
-  const goalHtml = m.goalDate ? `<div class="card goal-card"><div class="goal-row"><div><div class="goal-label">🎯 목표 날짜</div><div class="goal-sub">${m.goalDate}</div></div><div class="goal-val">${goalDays>=0?'D-'+goalDays:'기간 지남!'}</div></div></div>` : '';
+  const goalHtml=m.goalDate?`<div class="card goal-card" style="margin-top:14px"><div class="goal-row"><div><div class="goal-label">🎯 목표 날짜</div><div class="goal-sub">${m.goalDate}</div></div><div class="goal-val">${goalDays>=0?'D-'+goalDays:'기간 지남!'}</div></div></div>`:'';
 
-  c.innerHTML = `
-    <div class="card mascot-card">
-      ${pct===0 ? `<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:4px 0"><div class="mascot-float">${getMascot(themeIdx)}</div><input class="gift-input" placeholder="목표 달성하면 뭐 받고 싶어? 적어봐!" maxlength="30" value="${m.giftMsg||''}" oninput="saveGift(this.value)"></div>` : `<div style="font-size:12px;color:#aaa;padding:6px 0">블럭을 눌러서 공부 체크! 🎯</div>`}
-    </div>
-    <div class="card" style="border-color:${theme.border};background:${theme.light}">
+  body.innerHTML=`
+    ${pct===0?`<div style="text-align:center;padding:12px 0 4px"><div class="mascot-float">${getMascot(themeIdx)}</div><input class="gift-input" placeholder="목표 달성하면 뭐 받고 싶어? 적어봐!" maxlength="30" value="${m.giftMsg||''}" oninput="saveGift(this.value)"></div><div style="height:14px"></div>`:''}
+    <div style="border-radius:12px;overflow:hidden;border:1.5px solid ${theme.border};background:${theme.light};padding:14px;margin-bottom:14px">
       <div class="progress-header"><div class="progress-label">${m.subject?m.subject+' · ':''}${m.name}</div><div class="progress-pct" style="color:${theme.tab}">${pct}%</div></div>
       <div class="bar-bg"><div class="bar-fill" id="mainBar" style="width:${pct}%;background:${theme.progress}"></div></div>
       <div class="sub-bars">
@@ -510,177 +465,123 @@ function renderMain() {
         <div class="sub-bar-item"><div class="sub-bar-bg"><div class="sub-bar-fill" style="background:${theme.tab};width:${Math.round((d2/total)*100)}%"></div></div>오답/복습 ${d2}/${total}</div>
       </div>
     </div>
-    ${goalHtml}
-    <div class="card">
-      <div class="legend"><div class="legend-item"><div class="legend-dot l0"></div>미완료</div><div class="legend-item"><div class="legend-dot l1"></div>완료</div><div class="legend-item"><div class="legend-dot l2"></div>오답/복습</div></div>
-      <div class="grid-title"><span>📄 ${m.startPage}~${m.startPage+total-1}쪽</span><button class="edit-btn" style="color:${theme.tab};background:${theme.light}" onclick="openEditModal()">✏️ 수정</button></div>
-      <div class="blocks-grid">${blocksHtml}</div>
-    </div>
+    ${goalHtml?goalHtml.replace('card goal-card" style="margin-top:14px"','').replace('<div class="card goal-card">',''):''}
+    <div class="legend"><div class="legend-item"><div class="legend-dot l0"></div>미완료</div><div class="legend-item"><div class="legend-dot l1"></div>완료</div><div class="legend-item"><div class="legend-dot l2"></div>오답/복습</div></div>
+    <div class="grid-title"><span>📄 ${m.startPage}~${m.startPage+total-1}쪽</span><button class="edit-btn" style="color:${theme.tab};background:${theme.light}" onclick="openEditModal()">✏️ 수정</button></div>
+    <div class="blocks-grid">${blocksHtml}</div>`;
+
+  extra.innerHTML=`${m.goalDate?`<div class="card goal-card"><div class="goal-row"><div><div class="goal-label">🎯 목표 날짜</div><div class="goal-sub">${m.goalDate}</div></div><div class="goal-val">${goalDays>=0?'D-'+goalDays:'기간 지남!'}</div></div></div>`:''}
     <button class="add-btn-small" onclick="openModal()">+ 새 미션 만들기</button>`;
+
   renderTabs();
 }
 
-function render() { renderTabs(); renderMain(); }
-window.render = render;
+function render(){ renderTabs(); renderMain(); }
+window.render=render;
 
-function toggleBlock(i) {
-  const m = missions[activeIdx];
-  if (!m.dates1) m.dates1 = []; if (!m.dates2) m.dates2 = [];
-  const now = Date.now();
-  m.pages[i] = (m.pages[i]+1) % 3;
-  if (m.pages[i]===1) { m.dates1[i]=now; m.dates2[i]=null; }
-  else if (m.pages[i]===2) { m.dates2[i]=now; }
-  else { m.dates1[i]=null; m.dates2[i]=null; }
-  const el = document.getElementById('block'+i);
-  if (el) {
-    el.outerHTML = makeBlockHtml(m.pages[i], m.startPage+i, i, m.dates1, m.dates2);
-    const newEl = document.getElementById('block'+i);
-    if (newEl) { newEl.classList.add('popping'); setTimeout(()=>newEl.classList.remove('popping'), 300); }
-  }
-  playSound(m.pages[i]);
-  saveAll();
-  document.getElementById('syncBadge').textContent = '🔄 저장중...';
-  setTimeout(() => { document.getElementById('syncBadge').textContent = '☁️ 동기화됨'; }, 1000);
-  const { pct, d1, d2, total } = getStats(m);
-  const bar = document.getElementById('mainBar'); if (bar) bar.style.width = pct+'%';
-  const pctEl = document.querySelector('.progress-pct'); if (pctEl) pctEl.textContent = pct+'%';
-  const subs = document.querySelectorAll('.sub-bar-fill');
-  if (subs[0]) subs[0].style.width = Math.round(((d1+d2)/total)*100)+'%';
-  if (subs[1]) subs[1].style.width = Math.round((d2/total)*100)+'%';
-  const si = document.querySelectorAll('.sub-bar-item');
-  if (si[0]) si[0].lastChild.textContent=` 완료 ${d1+d2}/${total}`;
-  if (si[1]) si[1].lastChild.textContent=` 오답/복습 ${d2}/${total}`;
-  if (isCompleted(m)) { setTimeout(() => { launchConfetti(); setTimeout(render, 1500); }, 300); }
-}
-window.toggleBlock = toggleBlock;
+window.toggleBlock=function(i){
+  const m=missions[activeIdx];
+  if(!m.dates1)m.dates1=[]; if(!m.dates2)m.dates2=[];
+  const now=Date.now();
+  m.pages[i]=(m.pages[i]+1)%3;
+  if(m.pages[i]===1){m.dates1[i]=now;m.dates2[i]=null;}
+  else if(m.pages[i]===2){m.dates2[i]=now;}
+  else{m.dates1[i]=null;m.dates2[i]=null;}
+  const el=document.getElementById('block'+i);
+  if(el){ el.outerHTML=makeBlockHtml(m.pages[i],m.startPage+i,i,m.dates1,m.dates2); const ne=document.getElementById('block'+i); if(ne){ne.classList.add('popping');setTimeout(()=>ne.classList.remove('popping'),300);} }
+  playSound(m.pages[i]); saveAll();
+  const {pct,d1,d2,total}=getStats(m);
+  const bar=document.getElementById('mainBar'); if(bar)bar.style.width=pct+'%';
+  const pctEl=document.querySelector('.progress-pct'); if(pctEl)pctEl.textContent=pct+'%';
+  const subs=document.querySelectorAll('.sub-bar-fill');
+  if(subs[0])subs[0].style.width=Math.round(((d1+d2)/total)*100)+'%';
+  if(subs[1])subs[1].style.width=Math.round((d2/total)*100)+'%';
+  const si=document.querySelectorAll('.sub-bar-item');
+  if(si[0])si[0].lastChild.textContent=` 완료 ${d1+d2}/${total}`;
+  if(si[1])si[1].lastChild.textContent=` 오답/복습 ${d2}/${total}`;
+  if(isCompleted(m)){setTimeout(()=>{launchConfetti();setTimeout(render,1500);},300);}
+};
 
-function saveGift(val) { if (missions[activeIdx]) { missions[activeIdx].giftMsg = val; saveAll(); } }
-window.saveGift = saveGift;
+window.saveGift=function(val){ if(missions[activeIdx]){missions[activeIdx].giftMsg=val;saveAll();} };
 
-// ── 완료 미션 ──────────────────────────────
-function renderCompleted() {
-  const c = document.getElementById('completedContent');
-  const done = missions.filter(isCompleted);
-  if (!done.length) { c.innerHTML = `<div class="completed-empty"><div style="font-size:48px;margin-bottom:12px">🏆</div><div>완료된 미션이 없어요!<br>열심히 공부해봐요 💪</div></div>`; return; }
-  c.innerHTML = `<div style="font-size:13px;font-weight:700;color:#888;margin-bottom:12px">🏆 완료한 미션 ${done.length}개</div>` +
-    done.map(m => {
-      const { total } = getStats(m);
-      const last = m.dates2 ? Math.max(...m.dates2.filter(Boolean)) : null;
-      return `<div class="completed-card"><div class="completed-header"><div class="completed-name">${m.subject?`[${m.subject}] `:''}${m.name}</div><div class="completed-badge">✅ 완료</div></div><div class="completed-info"><span>📄 ${m.startPage}~${m.startPage+total-1}쪽</span>${last?`<span>📅 ${fmtDate(last)}</span>`:''} ${m.giftMsg?`<span>🎁 ${m.giftMsg}</span>`:''}</div></div>`;
-    }).join('');
+// 완료 미션
+function renderCompleted(){
+  const c=document.getElementById('completedContent');
+  const done=missions.filter(isCompleted);
+  if(!done.length){c.innerHTML=`<div class="completed-empty"><div style="font-size:48px;margin-bottom:12px">🏆</div><div>완료된 미션이 없어요!<br>열심히 공부해봐요 💪</div></div>`;return;}
+  c.innerHTML=`<div style="font-size:13px;font-weight:700;color:#888;margin-bottom:12px">🏆 완료한 미션 ${done.length}개</div>`+done.map(m=>{const{total}=getStats(m);const last=m.dates2?Math.max(...m.dates2.filter(Boolean)):null;return`<div class="completed-card"><div class="completed-header"><div class="completed-name">${m.subject?`[${m.subject}] `:''}${m.name}</div><div class="completed-badge">✅ 완료</div></div><div class="completed-info"><span>📄 ${m.startPage}~${m.startPage+total-1}쪽</span>${last?`<span>📅 ${fmtDate(last)}</span>`:''} ${m.giftMsg?`<span>🎁 ${m.giftMsg}</span>`:''}</div></div>`;}).join('');
 }
 
-// ── 타이머 ──────────────────────────────────
-function setMode(mode) {
-  timerMode = mode; resetTimer();
-  document.getElementById('btnStopwatch').className = 'mode-btn'+(mode==='stopwatch'?' active':'');
-  document.getElementById('btnCountdown').className = 'mode-btn'+(mode==='countdown'?' active':'');
-  document.getElementById('countdownSetup').style.display = mode==='countdown'?'block':'none';
-}
-function setPreset(min, btn) {
-  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  countdownTarget = min*60; timerSeconds = countdownTarget; updateTimerDisplay();
-  document.getElementById('customMin').value=''; document.getElementById('customSec').value='';
-}
-function setCustomTime() {
-  const m=parseInt(document.getElementById('customMin').value)||0, s=parseInt(document.getElementById('customSec').value)||0;
-  countdownTarget=m*60+s; timerSeconds=countdownTarget; updateTimerDisplay();
-  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));
-}
-function toggleTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval); timerRunning=false;
-    document.getElementById('startBtn').textContent='▶ 계속';
-    document.getElementById('startBtn').className='tbtn start';
-    document.getElementById('timerDisplay').className='timer-display';
-  } else {
-    if (timerMode==='countdown'&&timerSeconds<=0) { timerSeconds=countdownTarget; if(timerSeconds<=0){alert('시간을 설정해주세요!');return;} }
-    timerRunning=true;
-    document.getElementById('startBtn').textContent='⏸ 일시정지';
-    document.getElementById('startBtn').className='tbtn stop';
-    document.getElementById('timerDisplay').className='timer-display running';
-    const startTs=Date.now()-(timerMode==='stopwatch'?timerSeconds*1000:(countdownTarget-timerSeconds)*1000);
-    timerInterval=setInterval(()=>{
-      if(timerMode==='stopwatch'){timerSeconds=Math.floor((Date.now()-startTs)/1000);}
-      else{timerSeconds=Math.max(0,countdownTarget-Math.floor((Date.now()-startTs)/1000));if(timerSeconds<=0){timerDone();return;}}
-      updateTimerDisplay();
-    },500);
-  }
-}
-function timerDone() {
-  clearInterval(timerInterval); timerRunning=false; timerSeconds=0; updateTimerDisplay();
+// 타이머
+window.setMode=function(mode){timerMode=mode;resetTimer();document.getElementById('btnStopwatch').className='mode-btn'+(mode==='stopwatch'?' active':'');document.getElementById('btnCountdown').className='mode-btn'+(mode==='countdown'?' active':'');document.getElementById('countdownSetup').style.display=mode==='countdown'?'block':'none';};
+window.setPreset=function(min,btn){document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');countdownTarget=min*60;timerSeconds=countdownTarget;updateTimerDisplay();document.getElementById('customMin').value='';document.getElementById('customSec').value='';};
+window.setCustomTime=function(){const m=parseInt(document.getElementById('customMin').value)||0,s=parseInt(document.getElementById('customSec').value)||0;countdownTarget=m*60+s;timerSeconds=countdownTarget;updateTimerDisplay();document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('selected'));};
+window.toggleTimer=function(){
+  if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('startBtn').textContent='▶ 계속';document.getElementById('startBtn').className='tbtn start';document.getElementById('timerDisplay').className='timer-display';}
+  else{if(timerMode==='countdown'&&timerSeconds<=0){timerSeconds=countdownTarget;if(timerSeconds<=0){alert('시간을 설정해주세요!');return;}}
+  timerRunning=true;document.getElementById('startBtn').textContent='⏸ 일시정지';document.getElementById('startBtn').className='tbtn stop';document.getElementById('timerDisplay').className='timer-display running';
+  const startTs=Date.now()-(timerMode==='stopwatch'?timerSeconds*1000:(countdownTarget-timerSeconds)*1000);
+  timerInterval=setInterval(()=>{if(timerMode==='stopwatch'){timerSeconds=Math.floor((Date.now()-startTs)/1000);}else{timerSeconds=Math.max(0,countdownTarget-Math.floor((Date.now()-startTs)/1000));if(timerSeconds<=0){timerDone();return;}}updateTimerDisplay();},500);}
+};
+function timerDone(){
+  clearInterval(timerInterval);timerRunning=false;timerSeconds=0;updateTimerDisplay();
   document.getElementById('timerDisplay').className='timer-display done';
-  document.getElementById('startBtn').textContent='▶ 시작';
-  document.getElementById('startBtn').className='tbtn start';
+  document.getElementById('startBtn').textContent='▶ 시작';document.getElementById('startBtn').className='tbtn start';
   playAlarm();
   const mins=Math.round(countdownTarget/60);
   timerLogs.unshift({type:'countdown',mins,ts:Date.now()});
-  if(timerLogs.length>20) timerLogs.pop();
+  if(timerLogs.length>100)timerLogs.pop();
   localStorage.setItem('timerLogs',JSON.stringify(timerLogs));
   renderTimerLog();
 }
-function resetTimer() {
-  clearInterval(timerInterval); timerRunning=false;
-  timerSeconds=timerMode==='countdown'?countdownTarget:0; updateTimerDisplay();
-  document.getElementById('startBtn').textContent='▶ 시작';
-  document.getElementById('startBtn').className='tbtn start';
-  document.getElementById('timerDisplay').className='timer-display';
-}
-function updateTimerDisplay() {
-  const s=timerSeconds, h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
-  const el=document.getElementById('timerDisplay'); if(!el) return;
-  el.textContent=h>0?`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-function renderTimerLog() {
-  const el=document.getElementById('timerLog'); if(!el) return;
-  const today=new Date().toDateString();
-  const tl=timerLogs.filter(l=>new Date(l.ts).toDateString()===today);
-  if(!tl.length){el.innerHTML=`<div style="color:#CCC;font-size:12px;text-align:center;padding:12px">아직 기록이 없어요</div>`;document.getElementById('totalStudy').textContent='0분';return;}
-  el.innerHTML=tl.map(l=>{const t=new Date(l.ts);return`<div class="log-item"><span>⏰ ${l.mins}분 집중</span><span>${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}</span></div>`;}).join('');
-  document.getElementById('totalStudy').textContent=tl.reduce((a,l)=>a+(l.mins||0),0)+'분';
-}
-window.setMode=setMode; window.setPreset=setPreset; window.setCustomTime=setCustomTime;
-window.toggleTimer=toggleTimer; window.resetTimer=resetTimer;
+window.resetTimer=function(){clearInterval(timerInterval);timerRunning=false;timerSeconds=timerMode==='countdown'?countdownTarget:0;updateTimerDisplay();document.getElementById('startBtn').textContent='▶ 시작';document.getElementById('startBtn').className='tbtn start';document.getElementById('timerDisplay').className='timer-display';};
+function updateTimerDisplay(){const s=timerSeconds,h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;const el=document.getElementById('timerDisplay');if(!el)return;el.textContent=h>0?`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
 
-// ── 음악 ──────────────────────────────────
-const AudioCtx=window.AudioContext||window.webkitAudioContext; let actx=null;
-function getACtx(){if(!actx)actx=new AudioCtx();return actx;}
-function selectMusic(type,btn){musicType=type;document.querySelectorAll('.music-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(musicPlaying){stopMusic();startMusic();}}
-function toggleMusic(){musicPlaying?stopMusic():startMusic();}
-function startMusic(){
-  try{
-    const ctx=getACtx();musicGain=ctx.createGain();musicGain.gain.value=(parseInt(document.getElementById('volumeSlider').value)/100)*0.3;musicGain.connect(ctx.destination);musicNodes=[];
-    if(musicType==='alpha'){[440,450].forEach((f,i)=>{const o=ctx.createOscillator(),pan=ctx.createStereoPanner();pan.pan.value=i===0?-1:1;o.frequency.value=f;o.type='sine';const g=ctx.createGain();g.gain.value=0.4;o.connect(g);g.connect(pan);pan.connect(musicGain);o.start();musicNodes.push(o);});const d=ctx.createOscillator();d.frequency.value=220;d.type='sine';const dg=ctx.createGain();dg.gain.value=0.15;d.connect(dg);dg.connect(musicGain);d.start();musicNodes.push(d);}
-    else{const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;const f=ctx.createBiquadFilter();f.type=musicType==='rain'?'bandpass':'lowpass';f.frequency.value=musicType==='rain'?800:600;src.connect(f);f.connect(musicGain);src.start();musicNodes.push(src);}
-    musicPlaying=true;document.getElementById('musicPlayBtn').textContent='⏹ 정지';document.getElementById('musicPlayBtn').className='tbtn stop';startViz();
-  }catch(e){}
+function renderTimerLog(){
+  const el=document.getElementById('timerLog');if(!el)return;
+  if(!timerLogs.length){el.innerHTML=`<div style="color:#CCC;font-size:12px;text-align:center;padding:12px">아직 기록이 없어요</div>`;document.getElementById('totalStudy').textContent='0분';return;}
+  el.innerHTML=timerLogs.map((l,idx)=>{
+    const t=new Date(l.ts);
+    const dateStr=`${t.getMonth()+1}/${t.getDate()} ${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+    return`<div class="log-item"><span>⏰ ${l.mins}분 집중</span><span style="display:flex;align-items:center;gap:8px"><span style="color:#aaa">${dateStr}</span><button class="log-del" onclick="deleteLog(${idx})">✕</button></span></div>`;
+  }).join('');
+  const total=timerLogs.reduce((a,l)=>a+(l.mins||0),0);
+  document.getElementById('totalStudy').textContent=total>=60?`${Math.floor(total/60)}시간 ${total%60}분`:total+'분';
 }
+
+window.deleteLog=function(idx){
+  timerLogs.splice(idx,1);
+  localStorage.setItem('timerLogs',JSON.stringify(timerLogs));
+  renderTimerLog();
+};
+
+// 음악
+const AudioCtx=window.AudioContext||window.webkitAudioContext;let actx=null;
+function getACtx(){if(!actx)actx=new AudioCtx();return actx;}
+window.selectMusic=function(type,btn){musicType=type;document.querySelectorAll('.music-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(musicPlaying){stopMusic();startMusic();}};
+window.toggleMusic=function(){musicPlaying?stopMusic():startMusic();};
+function startMusic(){try{const ctx=getACtx();musicGain=ctx.createGain();musicGain.gain.value=(parseInt(document.getElementById('volumeSlider').value)/100)*0.3;musicGain.connect(ctx.destination);musicNodes=[];if(musicType==='alpha'){[440,450].forEach((f,i)=>{const o=ctx.createOscillator(),pan=ctx.createStereoPanner();pan.pan.value=i===0?-1:1;o.frequency.value=f;o.type='sine';const g=ctx.createGain();g.gain.value=0.4;o.connect(g);g.connect(pan);pan.connect(musicGain);o.start();musicNodes.push(o);});const d=ctx.createOscillator();d.frequency.value=220;d.type='sine';const dg=ctx.createGain();dg.gain.value=0.15;d.connect(dg);dg.connect(musicGain);d.start();musicNodes.push(d);}else{const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;const f=ctx.createBiquadFilter();f.type=musicType==='rain'?'bandpass':'lowpass';f.frequency.value=musicType==='rain'?800:600;src.connect(f);f.connect(musicGain);src.start();musicNodes.push(src);}musicPlaying=true;document.getElementById('musicPlayBtn').textContent='⏹ 정지';document.getElementById('musicPlayBtn').className='tbtn stop';startViz();}catch(e){}}
 function stopMusic(){musicNodes.forEach(n=>{try{n.stop();}catch(e){}});musicNodes=[];if(musicGain){musicGain.disconnect();musicGain=null;}musicPlaying=false;document.getElementById('musicPlayBtn').textContent='▶ 재생';document.getElementById('musicPlayBtn').className='tbtn start';stopViz();}
-function setVolume(val){if(musicGain)musicGain.gain.value=(val/100)*0.3;}
+window.setVolume=function(val){if(musicGain)musicGain.gain.value=(val/100)*0.3;};
 function startViz(){const bars=document.querySelectorAll('.bar-vis');vizInterval=setInterval(()=>{bars.forEach(b=>{b.style.height=(10+Math.random()*38)+'px';});},400);}
 function stopViz(){clearInterval(vizInterval);const h=[20,35,28,42,18,38,24];document.querySelectorAll('.bar-vis').forEach((b,i)=>{b.style.height=h[i]+'px';});}
-window.selectMusic=selectMusic; window.toggleMusic=toggleMusic; window.setVolume=setVolume;
 
 function playSound(state){try{const ctx=getACtx(),osc=ctx.createOscillator(),g=ctx.createGain();osc.connect(g);g.connect(ctx.destination);if(state===0){osc.frequency.value=300;g.gain.setValueAtTime(0.1,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.15);osc.type='sine';}else if(state===1){osc.frequency.setValueAtTime(523,ctx.currentTime);osc.frequency.setValueAtTime(659,ctx.currentTime+0.1);g.gain.setValueAtTime(0.15,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);osc.type='triangle';}else{[523,659,784,1047].forEach((f,i)=>{const o=ctx.createOscillator(),gn=ctx.createGain();o.connect(gn);gn.connect(ctx.destination);o.frequency.value=f;o.type='sine';const t=ctx.currentTime+i*0.08;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(0.18,t+0.04);gn.gain.exponentialRampToValueAtTime(0.001,t+0.25);o.start(t);o.stop(t+0.3);});return;}osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.4);}catch(e){}}
 function playAlarm(){try{const ctx=getACtx();[[880,0],[988,0.2],[1047,0.4],[880,0.7],[1047,0.9],[1175,1.1]].forEach(([f,d])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;o.type='sine';const t=ctx.currentTime+d;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.25,t+0.05);g.gain.exponentialRampToValueAtTime(0.001,t+0.35);o.start(t);o.stop(t+0.4);});}catch(e){}}
-
 function launchConfetti(){const c=document.getElementById('confettiContainer');c.innerHTML='';const cols=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF922B','#CC5DE8'];for(let i=0;i<80;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.background=cols[~~(Math.random()*cols.length)];const sz=(8+Math.random()*8)+'px';p.style.width=sz;p.style.height=sz;p.style.animationDuration=(1.5+Math.random()*2)+'s';p.style.animationDelay=Math.random()*0.8+'s';p.style.borderRadius=Math.random()>0.5?'50%':'2px';c.appendChild(p);}setTimeout(()=>{c.innerHTML='';},4000);}
 
-// ── 미션 모달 ──────────────────────────────
-function openModal(){editMode=false;document.getElementById('modalTitle').textContent='✏️ 새 미션 만들기';document.getElementById('modalSubmitBtn').textContent='만들기 🎯';document.getElementById('deleteRow').style.display='none';['missionName','missionSubject','goalDate'].forEach(id=>document.getElementById(id).value='');document.getElementById('startPage').value='1';document.getElementById('endPage').value='50';document.getElementById('modalBg').classList.add('show');}
-function openEditModal(){const m=missions[activeIdx];if(!m)return;editMode=true;document.getElementById('modalTitle').textContent='🛠️ 미션 수정하기';document.getElementById('modalSubmitBtn').textContent='저장하기 ✅';document.getElementById('deleteRow').style.display='block';document.getElementById('missionName').value=m.name;document.getElementById('missionSubject').value=m.subject||'';document.getElementById('startPage').value=m.startPage;document.getElementById('endPage').value=m.startPage+m.pages.length-1;document.getElementById('goalDate').value=m.goalDate||'';document.getElementById('modalBg').classList.add('show');}
-function closeModal(){document.getElementById('modalBg').classList.remove('show');}
-function submitMission(){editMode?updateMission():createMission();}
+// 미션 모달
+window.openModal=function(){editMode=false;document.getElementById('modalTitle').textContent='✏️ 새 미션 만들기';document.getElementById('modalSubmitBtn').textContent='만들기 🎯';document.getElementById('deleteRow').style.display='none';['missionName','missionSubject','goalDate'].forEach(id=>document.getElementById(id).value='');document.getElementById('startPage').value='1';document.getElementById('endPage').value='50';document.getElementById('modalBg').classList.add('show');};
+window.openEditModal=function(){const m=missions[activeIdx];if(!m)return;editMode=true;document.getElementById('modalTitle').textContent='🛠️ 미션 수정하기';document.getElementById('modalSubmitBtn').textContent='저장하기 ✅';document.getElementById('deleteRow').style.display='block';document.getElementById('missionName').value=m.name;document.getElementById('missionSubject').value=m.subject||'';document.getElementById('startPage').value=m.startPage;document.getElementById('endPage').value=m.startPage+m.pages.length-1;document.getElementById('goalDate').value=m.goalDate||'';document.getElementById('modalBg').classList.add('show');};
+window.closeModal=function(){document.getElementById('modalBg').classList.remove('show');};
+window.submitMission=function(){editMode?updateMission():createMission();};
 function createMission(){const name=document.getElementById('missionName').value.trim(),subject=document.getElementById('missionSubject').value.trim(),start=parseInt(document.getElementById('startPage').value)||1,end=parseInt(document.getElementById('endPage').value)||50,goalDate=document.getElementById('goalDate').value;if(!name){alert('문제집 이름을 입력해주세요!');return;}if(end<start){alert('끝 페이지가 시작 페이지보다 작아요!');return;}missions.push({name,subject,startPage:start,goalDate,pages:new Array(Math.min(end-start+1,300)).fill(0),dates1:[],dates2:[]});activeIdx=missions.length-1;saveAll();closeModal();render();}
 function updateMission(){const name=document.getElementById('missionName').value.trim(),subject=document.getElementById('missionSubject').value.trim(),start=parseInt(document.getElementById('startPage').value)||1,end=parseInt(document.getElementById('endPage').value)||50,goalDate=document.getElementById('goalDate').value;if(!name){alert('문제집 이름을 입력해주세요!');return;}if(end<start){alert('끝 페이지가 시작 페이지보다 작아요!');return;}const newTotal=Math.min(end-start+1,300),old=missions[activeIdx];missions[activeIdx]={...old,name,subject,startPage:start,goalDate,pages:new Array(newTotal).fill(0).map((_,i)=>old.pages[i]||0),dates1:(old.dates1||[]).slice(0,newTotal),dates2:(old.dates2||[]).slice(0,newTotal)};saveAll();closeModal();render();}
-function deleteMission(){if(!confirm('이 미션을 삭제할까요?'))return;missions.splice(activeIdx,1);activeIdx=Math.max(0,activeIdx-1);saveAll();closeModal();render();}
+window.deleteMission=function(){if(!confirm('이 미션을 삭제할까요?'))return;missions.splice(activeIdx,1);activeIdx=Math.max(0,activeIdx-1);saveAll();closeModal();render();};
+window.closeModal=function(){document.getElementById('modalBg').classList.remove('show');};
 
-window.openModal=openModal; window.openEditModal=openEditModal; window.closeModal=closeModal;
-window.submitMission=submitMission; window.deleteMission=deleteMission;
-
-document.getElementById('modalBg').onclick=function(e){if(e.target===this)closeModal();};
-document.getElementById('nameModalBg').onclick=function(e){if(e.target===this)closeNameModal();};
+document.getElementById('modalBg').onclick=function(e){if(e.target===this)this.classList.remove('show');};
+document.getElementById('iconModalBg').onclick=function(e){if(e.target===this)this.classList.remove('show');};
 </script>
 </body>
 </html>

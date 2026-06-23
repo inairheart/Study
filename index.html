@@ -456,7 +456,11 @@ function renderMain(){
   const goalHtml=m.goalDate?`<div class="card goal-card" style="margin-top:14px"><div class="goal-row"><div><div class="goal-label">🎯 목표 날짜</div><div class="goal-sub">${m.goalDate}</div></div><div class="goal-val">${goalDays>=0?'D-'+goalDays:'기간 지남!'}</div></div></div>`:'';
 
   body.innerHTML=`
-    ${pct===0?`<div style="text-align:center;padding:12px 0 4px"><div class="mascot-float">${getMascot(themeIdx)}</div><input class="gift-input" placeholder="목표 달성하면 뭐 받고 싶어? 적어봐!" maxlength="30" value="${m.giftMsg||''}" oninput="saveGift(this.value)"></div><div style="height:14px"></div>`:''}
+    <div style="text-align:center;padding:12px 0 0">
+      <div class="mascot-float">${getMascot(themeIdx)}</div>
+      ${pct===0?`<input class="gift-input" placeholder="목표 달성하면 뭐 받고 싶어? 적어봐!" maxlength="30" value="${m.giftMsg||''}" oninput="saveGift(this.value)">`:''}
+    </div>
+    <div style="height:16px"></div>
     <div style="border-radius:12px;overflow:hidden;border:1.5px solid ${theme.border};background:${theme.light};padding:14px;margin-bottom:14px">
       <div class="progress-header"><div class="progress-label">${m.subject?m.subject+' · ':''}${m.name}</div><div class="progress-pct" style="color:${theme.tab}">${pct}%</div></div>
       <div class="bar-bg"><div class="bar-fill" id="mainBar" style="width:${pct}%;background:${theme.progress}"></div></div>

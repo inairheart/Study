@@ -358,7 +358,14 @@ let vizInterval = null;
 // ── Firebase 실시간 동기화 ──────────────────
 loadFromFirebase(data => {
   if (data) {
-    missions = data.missions || [];
+    // Firebase가 배열을 객체로 변환하는 문제 처리
+    const rawMissions = data.missions || [];
+    missions = Object.values(rawMissions).map(m => ({
+      ...m,
+      pages: Object.values(m.pages || []),
+      dates1: Object.values(m.dates1 || []),
+      dates2: Object.values(m.dates2 || []),
+    }));
     activeIdx = data.activeIdx || 0;
     appTitle = data.appTitle || '지율이의 미션 체크';
     appIcon = data.appIcon || '📚';
@@ -505,10 +512,11 @@ function toggleBlock(i) {
   else { m.dates1[i]=null; m.dates2[i]=null; }
   const el = document.getElementById('block'+i);
   if (el) {
-    const cls = m.pages[i]===2?'done2':m.pages[i]===1?'done1':'';
-    const d1ts = m.pages[i]===1 ? fmtDate(now) : '';
+    const state = m.pages[i];
+    const cls = state===2?'done2':state===1?'done1':'';
+    const dateStr = state===1 ? fmtDate(now) : state===2 ? fmtDate(now) : '';
     el.className = 'block ' + cls + ' popping';
-    el.innerHTML = `<span class="bnum">${m.startPage+i}</span>${d1ts?`<span class="bdate">${d1ts}</span>`:''}<span class="trophy">${getTrophy(i)}</span>`;
+    el.innerHTML = `<span class="bnum">${m.startPage+i}</span>${dateStr&&state!==2?`<span class="bdate">${dateStr}</span>`:''}<span class="trophy">${getTrophy(i)}</span>`;
     setTimeout(()=>{ if(el) el.classList.remove('popping'); },300);
   }
   playSound(m.pages[i]);
